@@ -1,0 +1,94 @@
+```yaml
+# Docker Compose configuration for the AI-Powered Personalized News Aggregator
+# This file defines the multi-container application environment for local development.
+# It sets up the frontend (React) and backend (Python) services, along with networking.
+#
+# To run:
+# 1. Ensure you have Docker and Docker Compose installed.
+# 2. Create a .env file from .env.example and fill in the required values.
+# 3. Run `docker-compose up --build` from the project root.
+
+version: '3.8'
+
+services:
+  # --------------------------------------------------------------------------
+  # Backend Service (Python API)
+  # --------------------------------------------------------------------------
+  # Handles business logic, sentiment analysis, and communication with news APIs.
+  backend:
+    container_name: news_aggregator_backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    # Mount the backend source code directory for live-reloading during development.
+    volumes:
+      - ./backend:/app
+    # Expose the backend port to the host machine.
+    ports:
+      - "5000:5000"
+    # Load environment variables from the .env file at the root.
+    # This file should contain secrets like API_KEY_NEWSAPI and configuration
+    # for other microservices, e.g., RECIPE_SERVICE_URL=http://recipe-book-api:8080
+    env_file:
+      - .env
+    # Add service to the custom network for communication with the frontend.
+    networks:
+      - news_aggregator_net
+    # Healthcheck to ensure the API is responsive before other services start.
+    # Assumes a /api/health endpoint exists in the Python application.
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+    # Automatically restart the container if it stops, unless manually stopped.
+    restart: unless-stopped
+
+  # --------------------------------------------------------------------------
+  # Frontend Service (React UI)
+  # --------------------------------------------------------------------------
+  # Serves the dynamic React user interface to the browser.
+  frontend:
+    container_name: news_aggregator_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    # Mount the frontend source code directory for live-reloading.
+    # The anonymous volume for node_modules prevents the host's node_modules
+    # from overwriting the container's, which is a common Docker-on-macOS/Windows issue.
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    # Expose the React development server port to the host machine.
+    ports:
+      - "3000:3000"
+    # Environment variables for the React app.
+    # These are accessible in the React code via `process.env.REACT_APP_*`.
+    environment:
+      - NODE_ENV=development
+      # The API URL points to the backend service as exposed on the host machine,
+      # as the API calls are made from the user's browser.
+      - REACT_APP_API_BASE_URL=http://localhost:5000/api
+      # --- Cross-Project Service Integration ---
+      # URLs for other services in the interconnected system. These would also be
+      # exposed on the host machine via their respective docker-compose files.
+      - REACT_APP_RECIPE_SERVICE_URL=http://localhost:8080/api # Example: Personal Recipe Book
+      - REACT_APP_MARKDOWN_SERVICE_URL=http://localhost:8081 # Example: Real-time Markdown Previewer
+    # Add service to the custom network.
+    networks:
+      - news_aggregator_net
+    # Ensures the backend service is started and healthy before the frontend starts.
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+# --------------------------------------------------------------------------
+# Networks
+# --------------------------------------------------------------------------
+# Defines the custom network for inter-service communication.
+networks:
+  news_aggregator_net:
+    driver: bridge
+```
