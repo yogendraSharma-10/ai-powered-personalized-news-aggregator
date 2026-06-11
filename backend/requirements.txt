@@ -1,0 +1,31 @@
+# -- Web Framework & Server --
+# Flask is a lightweight WSGI web application framework.
+Flask==2.3.2
+# Flask-Cors is an extension for handling Cross-Origin Resource Sharing (CORS),
+# making cross-origin AJAX possible.
+Flask-Cors==4.0.0
+# Gunicorn 'Green Unicorn' is a Python WSGI HTTP Server for UNIX.
+# It's a pre-fork worker model, used for production deployments.
+gunicorn==21.2.0
+
+# -- AI & Natural Language Processing --
+# VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and
+# rule-based sentiment analysis tool that is specifically attuned to sentiments
+# expressed in social media.
+vaderSentiment==3.3.2
+# Note: For more advanced analysis, consider libraries like spaCy, NLTK, or transformers.
+
+# -- Data Fetching & Parsing --
+# Requests is the de facto standard for making HTTP requests in Python.
+requests==2.31.0
+# Universal feed parser, for RSS and Atom feeds.
+feedparser==6.0.10
+# Beautiful Soup is a library for pulling data out of HTML and XML files.
+beautifulsoup4==4.12.2
+# lxml is a high-performance, production-quality XML and HTML parser.
+lxml==4.9.3
+
+# -- Utilities --
+# python-dotenv reads key-value pairs from a .env file and can set them
+# as environment variables. Useful for local development.
+python-dotenv==1.0.0

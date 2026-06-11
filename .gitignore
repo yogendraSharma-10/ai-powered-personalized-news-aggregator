@@ -1,0 +1,139 @@
+# .gitignore for AI-Powered Personalized News Aggregator
+# This file specifies intentionally untracked files that Git should ignore.
+# For more information, see https://git-scm.com/docs/gitignore
+
+# --- General / Project-wide ---
+
+# Environment variables
+# Never commit secrets or environment-specific configurations.
+# Use .env.example as a template.
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Log files
+*.log
+logs
+*.log.*
+
+# Dependency directories
+# These are installed via package managers (npm, pip)
+node_modules/
+/frontend/node_modules/
+
+# Build output
+dist/
+build/
+/frontend/build/
+/backend/dist/
+/backend/build/
+
+# --- Python / Backend ---
+
+# Virtual environments
+# Use `python -m venv venv` to create a virtual environment
+venv/
+env/
+.venv/
+.env/
+*/venv/
+*/env/
+*/.venv/
+*/.env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+*.egg-info/
+*.egg
+.eggs/
+wheels/
+pip-wheel-metadata/
+develop-eggs/
+parts/
+sdist/
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+nosetests.xml
+coverage.xml
+*.cover
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Mypy cache
+.mypy_cache/
+
+# Language model / NLP library caches (if any are downloaded)
+# Example:
+# .nltk_data/
+# .spacy_models/
+
+# --- Node.js / Frontend ---
+
+# Logs
+npm-debug.log*
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Local user configs
+.npmrc
+.yarnrc
+
+# --- IDE & Editor ---
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+
+# JetBrains / PyCharm / WebStorm
+.idea/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# --- Operating System ---
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# --- Docker ---
+# If you use local override files for docker-compose that shouldn't be committed
+# docker-compose.override.yml
